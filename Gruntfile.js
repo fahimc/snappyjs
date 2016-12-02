@@ -23,8 +23,8 @@ module.exports = function(grunt) {
             },
             dist: {
                 expand: true,
-                cwd: 'src/js',
-                src: ['lib/snappy.js'],
+                cwd: 'src/js/lib',
+                src: ['snappy.js'],
                 dest: 'dist/'
             },
         },
