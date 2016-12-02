@@ -1,174 +1,131 @@
-# babel-seed
-  
-
-## Content  
-[About](#About)  
-----[Browser Matrix](#BrowserMatrix)  
-----[Mobile Matrix](#MobileMatrix)  
-----[Technologies Used](#TechnologiesUsed)  
-----[Architecture](#Architecture)  
-[Getting Started](#GettingStarted)  
-----[Prerequisites](#Prerequisites)  
-----[Setup](#Setup)  
-[Development](#Development)    
-----[Branches](#Branches)   
-----[Launch Development Mode](#LaunchDevelopmentMode)    
-----[Releasing Code](#ReleasingCode)   
-
+# Snappy JS  
 ----------
+## <a name="Contribution"></a>Contribution  
+This framework which design and built by the following people:  
+**Fahim Chowdhury**  
+**Stu Huntington**  
 
 ## <a name="About"></a>About
 
-This is a boilerplate for building ES6 based projects. Its is very barebones with no frameworks or libraries.
+This a very small ES6 framework to create JS components in a pre-rendered custom HTML tags. 
 
+With many component libraries, custom tags are rendered after the framework has loaded and this is not good for SEO.
 
-### <a name="BrowserMatrix"></a>Browser Matrix
+SnappyJS will wait for the page to load and then wrap the custom tags with component functionality.   
 
-| **OS**  | **OS Version**  |**Browser**| **Browser Version** | **Testing Type** |  
-|---      |---              |---        |---                  |---               |  
-|Windows  | 10              |  Edge     | 13+ (Latest)        | **Full**             |
-|Windows  | -               |  IE       | 11                  | **Full**             |
-| -       | -               | Firefox   | 44+ (Latest)        | **Full**             |  
-| -       | -               | Chrome | 48+ (Latest)        | **Full**             |
+SnappyJS is OOP with inheritance and you can have as many tags on the page and they will be their own component.
 
-### <a name="MobileMatrix"></a>Mobile Matrix
-
-| **Device**  | **OS**  | **OS Version**  |**Browser**| **Browser Version** | **Testing Type** |  
-|---   |---   |---              |---        |---                  |---               |  
-|IPhone       | IOS     |  9.2+           | Safari    | -|**Full** |
-|IPad| IOS     |  9.2+           | Safari    | -|**Full** |
-|Galaxy S6/ Edge| Android |  5.1.1           | Chrome | -|**Full** |
-|Samsung S5| Android |  5.0+           | Chrome | -|**Full** | 
-
-
-### <a name="TechnologiesUsed"></a>Technologies Used  
-Here is a list of the frameworks, libraries and tools used to build this project:  
-
-  
-#### Build Tools  
-
-* Browserify
-* Babel
-* SASS v1.0 ([link](example))
-* Grunt v1.0 ([link](example))
-* [vccp-dev](https://github.com/vccp/vccp-dev)
-
-### <a name="Architecture"></a>Architecture  
-Here is an overview of the project architecture:  
- 
-Folder structure: 
- 
-```html
-src/ <!-- Development source code-->
-  |- js/ <!-- components and main files -->
-    |- component/ <!-- component folder -->
-      |- style/ <!-- component style files -->
-  |- lib/ <!-- third-party library files -->
-  |- resource/ <!-- resources for the app such as images and fonts -->
-    |- image/ <!-- images -->
-    |- font/ <!-- fonts -->
-dist/ <!-- Compiled code-->
-test/ <!-- Test scripts -->
-util/ <!-- for CLI -->
-  |- task/ <!-- modules for a task runner such as grunt -->
-  |- server/ <!-- node local server files -->
-```
-
-----------  
-
-## <a name="GettingStarted"></a>Getting Started  
 
 ### <a name="Prerequisites"></a>Prerequisites  
- You are going to need: 
-  
- * Node  ([link](example))
- * Grunt-CLI   ([link](example))  
- * [vccp-dev](https://github.com/vccp/vccp-dev)
+Below is a list of things you will need in order to use this library:
 
-#### Environments  
-This project has been built and tested on the following machines/systems: 
+- ES6 project
 
-* Windows 10  
-* Mac    
+## Usage  
 
-### <a name="Setup"></a>Setup
-1. clone repo  
-2. open `cmd`  
-3. `cd` into project folder  
-4.  Run the following:  
- 
- ```shell
- npm install  
- ```
+Include snappy.js into your ES6 project and initialise Snappy:
 
-----------
+```js
+import Snappy from "./lib/snappy";
 
-## <a name="Development"></a>Development
+let Main =
+{
+  init()
+  {
+    Snappy.init();
+    document.addEventListener('DOMContentLoaded', this.onLoaded.bind(this));
+  },
+  onLoaded()
+  {
 
-### <a name="Branches"></a>Branches  
-| **Branch**  | **Description**  |
-|---      |---              |
-|develop| This branch is used for stable development source code and will be used to compile code for staging.|
-|staging| This branch is compiled code for staging servers. This code should be the compiled code from develop branch.|
-|uat|This branch is compiled code QA.|
-|master| This branch should be the source code deployed to the live environment. Do not merge into this branch unless you wish to deploy live.|
-|release| This branch will have the compiled source code from the master branch and will be the code deployed to the live environment|  
-|documentation| This branch will be to store images and files for documentation|
+  }
+};
 
-#### Creating Branches  
-
-Always create a branch from **develop**.
-
-To create a **feature** branch, follow the naming convention below:
+Main.init();
 ```
-sprint-1/feature/feature-name
+
+## Creating a Component
+
+1. Create a new ES6 file and import snappy:
+
+```js
+import Snappy from '../../lib/snappy';
+
+``` 
+
+2. Create a new class and Extend Snappy's **base** component:
+```js
+Snappy.Component.Title = class Title extends Snappy.BaseComponent {
+
+}
+
+```
+
+The Class must consist of the following functions:
+
+```js
+import Snappy from '../../lib/snappy';
+
+Snappy.Component.Title = class Title extends Snappy.BaseComponent {
+    static get tagName() {
+    }
+
+    constructor(element) {
+    }
+
+    render() {
+    }
+}
+
+```
+
+
+3. Snappy needs to know which HTML tag you want to associate this component with, to do this you need to create a static `tagName()` function and return the tag name. Snappy will check this function once the page has loaded to find components on the page.
+
+```js
+import Snappy from '../../lib/snappy';
+
+Snappy.Component.Title = class Title extends Snappy.BaseComponent {
+    static get tagName() {
+        return 'snappy-title';
+    }
+}
+
 ```  
+4. Snappy will pass the Class the HTML element into the constructor. You need to pass this to the `super` class so it can be injected into the Class.
 
-To create a **bug-fix** branch, follow the naming convention below:
-```
-sprint-1/bug-fix/bug-name
-```
+```js
+import Snappy from '../../lib/snappy';
 
-### <a name="LaunchDevelopmentMode"></a>Launch Development Mode
+Snappy.Component.Title = class Title extends Snappy.BaseComponent {
+    static get tagName() {
+        return 'snappy-title';
+    }
 
-Run the following command to start developing and to stage the development environment
-
-```shell
-grunt
-```
-
-### Lint Your Code  
-
-Please ensure all code is linted via the following command otherwise you cannot merge code to develop.  
-```
-vccp-dev lint
-```
-
-### Merging Code to Develop  
-
-You should only use the following command when merging to the `develop` branch.  
+    constructor(element) {
+        super(element);
+    }
+}
 
 ```
-vccp-dev merge-to-develop
+
+5. Once the component has been instantiated, Snappy will call `render` on the component. You can add your functionality via this function.
+
+```js
+import Snappy from '../../lib/snappy';
+
+Snappy.Component.Title = class Title extends Snappy.BaseComponent {
+    static get tagName() {
+        return 'snappy-title';
+    }
+
+    constructor(element) {
+        super(element);
+    }
+
+    render() {
+        this.element.innerHTML += '<br>Snappy Element';
+    }
+}
+
 ```
-
-----------
-
-## <a name="ReleasingCode"></a>Releasing Code
-To release your code, use the following command:
-
-```
-vccp-dev release --prod --keep
-```
-
-###Flags  
-
-Please read the documentation for [vccp-dev](https://github.com/vccp/vccp-dev).  
-
-| **Name**  | **Description**  |  
-|---   |---   |  
-|--uat| releases compiled code to the `uat` branch|  
-|--prod| pushes development code to the `master` branch and releases compile to the `release` branch. A **tag** will be created. |  
-  
-----------
-
