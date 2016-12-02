@@ -23,6 +23,9 @@ Below is a list of things you will need in order to use this library:
 
 ## Usage  
 
+###Download  
+Either download the tag or check the release branch. Download the snappy.js file.
+
 Include snappy.js into your ES6 project and initialise Snappy:
 
 ```js
