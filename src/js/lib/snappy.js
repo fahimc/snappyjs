@@ -7,10 +7,11 @@ const Snappy = {
   onDOMLoaded: function(event) {
     this.renderComponents();
   },
-
+  Component: {},
   renderComponents: function() {
     for (let key in this.Component) {
-      let elements = document.querySelectorAll(`${this.Component[key].tagName}:not([data-defer-snappy])`);
+      let componentName = (this.camelCaseToDash(key));
+      let elements = document.querySelectorAll(`[data-component=${componentName}]`);
 
       elements = Array.prototype.slice.call(elements);
 
@@ -18,13 +19,14 @@ const Snappy = {
         let component = new this.Component[key](element);
 
         element.component = component;
-        component.render();
+        let hasDefer = element.hasAttribute('data-defer-render');
+       if(!hasDefer)component.render();
       }.bind(this));
     }
   },
-
-  Component: {},
-
+  camelCaseToDash(str) {
+    return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+  },
   BaseComponent: class {
     constructor(element) {
       this.element = element;
@@ -34,6 +36,9 @@ const Snappy = {
         this.$window = $(window);
         this.$body = $('body');
       }
+    }
+    render(){
+
     }
   }
 

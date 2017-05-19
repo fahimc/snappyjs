@@ -70,9 +70,6 @@ The Class must consist of the following functions:
 import Snappy from '../../lib/snappy';
 
 Snappy.Component.Title = class Title extends Snappy.BaseComponent {
-    static get tagName() {
-    }
-
     constructor(element) {
     }
 
@@ -83,28 +80,24 @@ Snappy.Component.Title = class Title extends Snappy.BaseComponent {
 ```
 
 
-3. Snappy needs to know which HTML tag you want to associate this component with, to do this you need to create a static `tagName()` function and return the tag name. Snappy will check this function once the page has loaded to find components on the page.
+3. Snappy needs to know which HTML tag you want to associate this component with, Snappy will use the class name and hypenate it. for example 'BackButton' will be 'back-button'.  
+
+In your markup you will need to add an attribute so snappy can apply the class to the element. 'data-component' is used to bind the element and an instance of the class.
+
+### Example of Markup:  
 
 ```js
-import Snappy from '../../lib/snappy';
-
-Snappy.Component.Title = class Title extends Snappy.BaseComponent {
-    static get tagName() {
-        return 'snappy-title';
-    }
-}
+<div data-component="title">Hello World</div>
 
 ```  
+
+
 4. Snappy will pass the Class the HTML element into the constructor. You need to pass this to the `super` class so it can be injected into the Class.
 
 ```js
 import Snappy from '../../lib/snappy';
 
 Snappy.Component.Title = class Title extends Snappy.BaseComponent {
-    static get tagName() {
-        return 'snappy-title';
-    }
-
     constructor(element) {
         super(element);
     }
@@ -118,10 +111,6 @@ Snappy.Component.Title = class Title extends Snappy.BaseComponent {
 import Snappy from '../../lib/snappy';
 
 Snappy.Component.Title = class Title extends Snappy.BaseComponent {
-    static get tagName() {
-        return 'snappy-title';
-    }
-
     constructor(element) {
         super(element);
     }
@@ -132,3 +121,12 @@ Snappy.Component.Title = class Title extends Snappy.BaseComponent {
 }
 
 ```
+
+6. If you want to defer the render method, you can add 'data-defer-render' to the element and you now can call render() when you need to.  
+
+### Example of Markup:  
+
+```js
+<div data-component="title" data-defer-render>Hello World</div>
+
+```  
